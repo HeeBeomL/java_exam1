@@ -1,0 +1,38 @@
+package jdbc.lib.step1;
+
+import java.sql.*;
+
+/*
+  SELECT mem_nick, mem_name
+    FROM tomato_member
+   WHERE mem_id =:user_id -파라미터 String - varchar2(10)
+     ANd mem_pw =:user_pw; - 파라미터 String - varchar2(10)
+   */
+public class LoginAction {
+    Connection con;//물리적으로 떨어져 있는 오라클 서버와 연결통로 확보
+    Statement stmt;//위에서 연결된 경로로 쿼리문을 전달하기와 처리 요청하기에 대한 메소드가 있다.
+    ResultSet rs;//오라클 작동되는 커서를 구현한 인터페이스 이다.
+    //파라미터의 갯수와 타입. 그리고 리턴 타입까지 선택할 수 있어야
+    //나는 메소드를 설계할 수 있다.
+    public void LoginAction(String user_id, String user_pw) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT mem_nick, mem_name");
+        sql.append(" FROM tomato_member");
+        sql.append(" WHERE mem_id = '"+user_id+"'");
+        sql.append(" AND mem_pw = '"+user_pw+"'");
+        try{
+            Class.forName(OracleConnection._DRIVER);
+           con = DriverManager.getConnection(OracleConnection._URL,OracleConnection._USER,OracleConnection._PW);
+           stmt = con.createStatement();
+           rs = stmt.executeQuery(sql.toString());
+        } catch (SQLException e) {
+
+        }
+    }
+
+
+    public static void main(String[] args) {
+        LoginAction loginAction = new LoginAction();
+        loginAction.login("tomato33333", "123");
+    }
+}

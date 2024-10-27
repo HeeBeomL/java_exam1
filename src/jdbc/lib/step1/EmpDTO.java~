@@ -1,0 +1,4 @@
+package jdbc.lib.step1;
+
+public class EmpDTO {
+}
